@@ -1,6 +1,6 @@
 # key pair
 
-resource "aws_key_pair" "deployer" {
+resource "aws_key_pair" "my_key" {
      key_name   = "terra-key-ec2"
      public_key = file("terra-key-ec2.pub")
 } 
@@ -43,6 +43,34 @@ resource "aws_security_group" "my_security_group" {
 
 
      # outbound rules
+     egress {
+          from_port = 0
+          to_port = 0
+          protocol = "-1"
+          cidr_blocks = [ "0.0.0.0/0" ]
+          description = "all access"
+     }
+
+     tags = {
+          Name = "automated-sg"
+     }
 }
 
 # ec2 instance
+
+resource "aws_instance" "my_instance" {
+     key_name = aws_key_pair.my_key.key_name
+     security_groups = [aws_security_group.my_security_group.name]
+     instance_type = "t3.micro"
+     ami = "ami-01a00762f46d584a1"
+
+     root_block_device {
+       volume_size = 15
+       volume_type = "gp3"
+     }
+
+     tags = {
+          Name = "terraform"
+     }
+  
+}
