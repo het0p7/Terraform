@@ -1,5 +1,5 @@
-resource local_file my_file {
-    filename = "automate.txt"
-    content = "devops"
+# resource local_file my_file {
+#     filename = "automate.txt"
+#     content = "devops"
 
-}
+# }
